@@ -68,7 +68,7 @@ public class JdbcService {
                     person.setFirstName(fName);
                     person.setLastName(lName);
                     personArrayList.add(person);
-                    repository.saveAll(personArrayList);
+                    repository.saveAll(List.of(person));
                 }
                 System.out.println("People added successfully.");
                 break;
