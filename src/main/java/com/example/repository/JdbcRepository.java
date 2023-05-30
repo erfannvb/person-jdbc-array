@@ -216,7 +216,7 @@ public class JdbcRepository {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int numberOfPeople = resultSet.getInt("number_of_people");
-                System.out.println(numberOfPeople);
+                System.out.println("Number of People : " + numberOfPeople);
             }
 
         } catch (SQLException e) {
