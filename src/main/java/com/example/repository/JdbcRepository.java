@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.repository.Queries.*;
+import static com.example.repository.JdbcQueries.*;
 
-public class Methods {
+public class JdbcRepository {
 
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
@@ -25,12 +25,16 @@ public class Methods {
                 System.out.println("Error getting the connection.");
             }
 
+            connection.setAutoCommit(false);
+
             preparedStatement = connection.prepareStatement(INSERT_INTO);
 
             preparedStatement.setString(1, person.getFirstName());
             preparedStatement.setString(2, person.getLastName());
 
             preparedStatement.execute();
+
+            connection.commit();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -53,6 +57,8 @@ public class Methods {
                 System.out.println("Error getting the connection.");
             }
 
+            connection.setAutoCommit(false);
+
             preparedStatement = connection.prepareStatement(INSERT_INTO);
 
             for (int i = 0; i < personList.size(); i++) {
@@ -62,6 +68,8 @@ public class Methods {
             }
 
             preparedStatement.executeBatch();
+
+            connection.commit();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -82,6 +90,8 @@ public class Methods {
                 System.out.println("Error getting the connection.");
             }
 
+            connection.setAutoCommit(false);
+
             preparedStatement = connection.prepareStatement(UPDATE_RECORD);
 
             preparedStatement.setString(1, person.getFirstName());
@@ -89,6 +99,8 @@ public class Methods {
             preparedStatement.setLong(3, person.getId());
 
             preparedStatement.execute();
+
+            connection.commit();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -190,6 +202,34 @@ public class Methods {
             }
         }
         return personList;
+    }
+
+    public void getNumberOfPeople() {
+        try {
+            connection = JdbcConnection.getConnection();
+            if (connection == null) {
+                System.out.println("Error getting the connection.");
+            }
+
+            preparedStatement = connection.prepareStatement(NUMBER_OF_PEOPLE);
+
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int numberOfPeople = resultSet.getInt("number_of_people");
+                System.out.println(numberOfPeople);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                JdbcConnection.closeConnection(connection);
+                JdbcConnection.closePreparedStatement(preparedStatement);
+                JdbcConnection.closeResultSet(resultSet);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }
