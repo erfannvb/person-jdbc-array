@@ -1,10 +1,6 @@
 package com.example.view;
 
-import com.example.entity.Person;
-import com.example.repository.JdbcRepository;
 import com.example.service.JdbcService;
-
-import java.util.List;
 
 public class JdbcView {
     public static void main(String[] args) {
