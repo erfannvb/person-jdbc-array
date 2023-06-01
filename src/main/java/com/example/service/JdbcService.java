@@ -72,6 +72,15 @@ public class JdbcService {
                 }
                 System.out.println("People added successfully.");
                 break;
+
+            case 7:
+                System.out.print("Enter the limit number : ");
+                int limit = input.nextInt();
+                System.out.print("Enter the offset number : ");
+                int offset = input.nextInt();
+                repository.loadWithPagination(limit, offset);
+                break;
+
         }
     }
 

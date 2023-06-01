@@ -232,4 +232,39 @@ public class JdbcRepository {
         }
     }
 
+    public void loadWithPagination(int limit, int offset) {
+        try {
+
+            connection = JdbcConnection.getConnection();
+            if (connection == null) {
+                System.out.println("Error getting the connection.");
+            }
+
+            preparedStatement = connection.prepareStatement(SELECT_ALL_WITH_PAGINATION);
+            preparedStatement.setInt(1, limit);
+            preparedStatement.setInt(2, offset);
+
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("LastName");
+                System.out.println(id + " : " + firstName + " " + lastName);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+
+                JdbcConnection.closeConnection(connection);
+                JdbcConnection.closePreparedStatement(preparedStatement);
+                JdbcConnection.closeResultSet(resultSet);
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 }
