@@ -81,6 +81,10 @@ public class JdbcService {
                 repository.loadWithPagination(limit, offset);
                 break;
 
+            case 8:
+                System.exit(0);
+                break;
+
         }
     }
 
