@@ -25,6 +25,13 @@ public class JdbcService {
                 break;
 
             case 2:
+                Person[] persons = repository.loadAllWithArray();
+                for (int i = 0; i < persons.length; i++)
+                    System.out.println(persons[i].getId() + " : " +
+                            persons[i].getFirstName() + " " + persons[i].getLastName());
+                break;
+
+            case 3:
                 System.out.print("Enter the id : ");
                 Long userId = input.nextLong();
                 System.out.println(repository.loadById(userId).getId() + " : " +
@@ -32,18 +39,18 @@ public class JdbcService {
                         repository.loadById(userId).getLastName());
                 break;
 
-            case 3:
+            case 4:
                 repository.getNumberOfPeople();
                 break;
 
-            case 4:
+            case 5:
                 System.out.print("Enter the id you want to delete : ");
                 Long deleteId = input.nextLong();
                 repository.deleteById(deleteId);
                 System.out.println("Person got deleted successfully.");
                 break;
 
-            case 5:
+            case 6:
                 System.out.print("Enter new first name : ");
                 String firstName = input.next();
                 System.out.print("Enter new last name : ");
@@ -55,7 +62,7 @@ public class JdbcService {
                 System.out.println("New person added successfully.");
                 break;
 
-            case 6:
+            case 7:
                 System.out.print("How many people do you want to add : ");
                 int size = input.nextInt();
                 List<Person> personArrayList = new ArrayList<>();
@@ -73,7 +80,7 @@ public class JdbcService {
                 System.out.println("People added successfully.");
                 break;
 
-            case 7:
+            case 8:
                 System.out.print("Enter the limit number : ");
                 int limit = input.nextInt();
                 System.out.print("Enter the offset number : ");
@@ -81,7 +88,7 @@ public class JdbcService {
                 repository.loadWithPagination(limit, offset);
                 break;
 
-            case 8:
+            case 9:
                 System.exit(0);
                 break;
 

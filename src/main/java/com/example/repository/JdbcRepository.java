@@ -171,6 +171,55 @@ public class JdbcRepository {
         return person;
     }
 
+    public Person[] loadAllWithArray() {
+        Person[] people;
+        try {
+
+            connection = JdbcConnection.getConnection();
+            if (connection == null) {
+                System.out.println("Error getting the connection.");
+            }
+
+            preparedStatement = connection.prepareStatement(SELECT_ALL,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+
+            resultSet = preparedStatement.executeQuery();
+
+            int size = 0;
+
+            resultSet.last();
+            size = resultSet.getRow();
+            resultSet.beforeFirst();
+
+            people = new Person[size];
+
+            int count = 0;
+
+            while (resultSet.next()) {
+                Person person = new Person();
+                person.setId(resultSet.getLong("id"));
+                person.setFirstName(resultSet.getString("firstName"));
+                person.setLastName(resultSet.getString("lastName"));
+                people[count++] = person;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+
+                JdbcConnection.closeConnection(connection);
+                JdbcConnection.closePreparedStatement(preparedStatement);
+                JdbcConnection.closeResultSet(resultSet);
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return people;
+    }
+
     public List<Person> loadAll() {
         List<Person> personList = new ArrayList<>();
         try {
